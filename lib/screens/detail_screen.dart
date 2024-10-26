@@ -8,9 +8,6 @@ class DetailScreen extends StatelessWidget {
 
   const DetailScreen({super.key, required this.candi});
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
