@@ -36,11 +36,11 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: MainScreen(),
+      // home: MainScreen(),
       // home: DetailScreen(candi: candiList),
       // home: HomeScreen(),
       // home: ProfileScreen(),
-      // home: SignUpScreen(),
+      home: SignUpScreen(),
       // home: SignInScreen(),
       //  home: SearchScreen(),
     );
