@@ -7,6 +7,8 @@ import 'package:wisata_candi/screens/profil_screen.dart';
 import 'package:wisata_candi/screens/search_screen.dart';
 import 'package:wisata_candi/screens/sign_in_screen.dart';
 import 'package:wisata_candi/screens/sign_up_screen.dart';
+import 'package:wisata_candi/widgets/profile_info_item.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -36,13 +38,20 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      // home: MainScreen(),
+      // home: FavoriteScreen(),
+      home: MainScreen(),
       // home: DetailScreen(candi: candiList),
       // home: HomeScreen(),
       // home: ProfileScreen(),
-      home: SignUpScreen(),
+      // home: SignUpScreen(),
       // home: SignInScreen(),
       //  home: SearchScreen(),
+      initialRoute: '/',
+      routes: {
+        '/homescreen' : (context) => const HomeScreen(),
+        '/signin' : (context) =>  SignInScreen(),
+        '/signup' : (context) => SignUpScreen(),
+      },
     );
   }
 }

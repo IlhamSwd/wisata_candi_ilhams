@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypt/encrypt.dart'  as encrypt;
+
 
 class SignUpScreen extends StatefulWidget {
   SignUpScreen({super.key});
@@ -19,10 +22,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscurePassword = true;
 
   //TODO: 1.Membuat method _signUp
-  void _signUp(){
-    String name = _fullnameController.text.trim();
-    String username = _usernameController.text.trim();
-    String password = _passwordController.text.trim();
+  Future<void> _signUp() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String name = _fullnameController.text.trim();
+    final String username = _usernameController.text.trim();
+    final String password = _passwordController.text.trim();
     if(password.length < 8 ||
         !password.contains(RegExp(r'[A-Z]'))||
         !password.contains(RegExp(r'[a-z]'))||
@@ -31,11 +35,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
       setState(() {
         _errorText = 'Minimal 8 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#\\\$%^&*(),.?":{}|<>]';
       });
+      return;
     }
-    print('*** Sign Up berhasil!');
-    print('Nama: $name');
-    print('Nama Pengguna: $username');
-    print('Password: $password');
+    // TODO: 3. Jika name, username, dan password tidak kosong lakukan enkripsi
+    if(name.isNotEmpty && username.isNotEmpty && password.isNotEmpty) {
+      final encrypt.Key key = encrypt.Key.fromLength(32);
+      final iv = encrypt.IV.fromLength(16);
+
+      final encrypter = encrypt. Encrypter (encrypt.AES(key));
+      final encryptedName = encrypter.encrypt(name, iv: iv);
+      final encryptedUsername = encrypter.encrypt (username, iv: iv);
+      final encryptedPassword = encrypter.encrypt(password, iv: iv);
+
+      // simpan data pengguna di shared preferences
+      prefs.setString('fullname', encryptedName.base64);
+      prefs.setString('username', encryptedUsername.base64);
+      prefs.setString('password', encryptedPassword.base64);
+    }
+
+
+    // buat navigasi ke SignInScreen
+    Navigator.pushReplacementNamed(context, '/signin');
+    // print('*** Sign Up berhasil!');
+    // print('Nama: $name');
+    // print('Nama Pengguna: $username');
+    // print('Password: $password');
   }
 
   //TODO: 2.Membuat method dispose

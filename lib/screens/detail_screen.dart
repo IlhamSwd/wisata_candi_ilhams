@@ -1,12 +1,40 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final dynamic candi;
 
   const DetailScreen({super.key, required this.candi});
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool isFavorite = false;
+  bool isSignedln = false;
+
+  Future<void> _toggleFavorite() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Memeriksa apakah pengguna sudah sign in
+    if (!isSignedln) {
+      // jika belum sign in, arahkan ke SignInScreen
+      WidgetsBinding.instance.addPersistentFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/signin');
+      });
+      return;
+    }
+    bool favoriteStatus = !isFavorite;
+    prefs.setBool('favorite_${widget.candi.name}', favoriteStatus);
+
+    setState(() {
+      isFavorite = favoriteStatus;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +52,7 @@ class DetailScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
-                      candi.imageAsset,
+                      widget.candi.imageAsset,
                       width: double.infinity,
                       height: 300,
                       fit: BoxFit.cover,
@@ -65,7 +93,7 @@ class DetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        candi.name,
+                        widget.candi.name,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -86,7 +114,7 @@ class DetailScreen extends StatelessWidget {
                     SizedBox(width: 70,
                       child: Text('lokasi', style: TextStyle(
                           fontWeight: FontWeight.bold),),),
-                    Text(': ${candi.location}',),
+                    Text(': ${widget.candi.location}',),
                   ],),
                   Row(children: [
                     Icon(Icons.calendar_month,color: Colors.blue,),
@@ -94,7 +122,7 @@ class DetailScreen extends StatelessWidget {
                     SizedBox(width: 70,
                       child: Text('Dibangun', style: TextStyle(
                           fontWeight: FontWeight.bold),),),
-                    Text(': ${candi.built}',),
+                    Text(': ${widget.candi.built}',),
                   ],),
                   Row(children: [
                     Icon(Icons.house,color: Colors.green,),
@@ -102,7 +130,7 @@ class DetailScreen extends StatelessWidget {
                     SizedBox(width: 70,
                       child: Text('Tipe', style: TextStyle(
                           fontWeight: FontWeight.bold),),),
-                    Text(': ${candi.type}',),
+                    Text(': ${widget.candi.type}',),
 
                   ],),
                   SizedBox(height: 16,),
@@ -127,7 +155,7 @@ class DetailScreen extends StatelessWidget {
                     height: 100,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: candi.imageUrls.length,
+                      itemCount: widget.candi.imageUrls.length,
                       itemBuilder: (context,index){
                         return Padding(
                           padding: EdgeInsets.only(left: 8),
@@ -144,7 +172,7 @@ class DetailScreen extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
-                                  imageUrl:candi.imageUrls[index],
+                                  imageUrl:widget.candi.imageUrls[index],
                                   width: 120,
                                   height: 120,
                                   fit: BoxFit.cover,
