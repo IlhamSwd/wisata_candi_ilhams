@@ -49,7 +49,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 Hero(
                   tag: widget.candi.imageAsset,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.asset(

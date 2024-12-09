@@ -39,19 +39,19 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: FavoriteScreen(),
-      home: MainScreen(),
       // home: DetailScreen(candi: candiList),
-      // home: HomeScreen(),
+      home: HomeScreen(),
       // home: ProfileScreen(),
       // home: SignUpScreen(),
       // home: SignInScreen(),
       //  home: SearchScreen(),
-      initialRoute: '/',
-      routes: {
-        '/homescreen' : (context) => const HomeScreen(),
-        '/signin' : (context) =>  SignInScreen(),
-        '/signup' : (context) => SignUpScreen(),
-      },
+      // home: MainScreen(),
+      // initialRoute: '/',
+      // routes: {
+      //   '/homescreen' : (context) => const HomeScreen(),
+      //   '/signin' : (context) =>  SignInScreen(),
+      //   '/signup' : (context) => SignUpScreen(),
+      // },
     );
   }
 }
